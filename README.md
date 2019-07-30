@@ -4,7 +4,7 @@ Repositório para matéria de Banco de Dados I
 # Comandos Git
 
 Comandos que iremos utilizar
-```git
+```
 
 //Para baixar o projetos em maquinas distintas usamos o comando: "git clone <link do repositorio>"
 //Ficando algo asimm
@@ -40,9 +40,8 @@ git push
 
 //isso enviará todas suas modificações para essse repositório
 :)
-
-
 ```
+fonte("https://git-scm.com/docs")
 # Comandos SQL
 
 ```sql
@@ -122,3 +121,4 @@ SELECT SUM(nome_da_coluna)
 FROM nome_da_tabela
 WHERE condicao;
 ```
+fonte('https://www.w3schools.com/sql/default.asp')
