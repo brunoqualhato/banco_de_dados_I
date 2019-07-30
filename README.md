@@ -46,5 +46,39 @@ git push
 # Comandos SQL
 
 ```sql
-# SELECT
+#A instrução INSERT INTO é usada para inserir novos registros em uma tabela.
+#É possível escrever a instrução INSERT INTO de duas maneiras.
+#A primeira maneira especifica os nomes das colunas e os valores a serem inseridos:
+
+INSERT INTO nome_da_tabela (coluna1, coluna2, coluna3, ...)
+VALUES (valor1, valor2, valor3, ...);
+
+#Se você estiver adicionando valores para todas as colunas da tabela, não será necessário especificar os nomes das colunas na #consulta SQL. No entanto, verifique se a ordem dos valores está na mesma ordem das colunas na tabela. A sintaxe INSERT INTO #seria a seguinte:
+
+INSERT INTO nome_da_tabela
+VALUES (valor1, valor2, valor3, ...);
+
+
+#A instrução SELECT é usada para selecionar dados de um banco de dados.
+#Os dados retornados são armazenados em uma tabela de resultados, chamada de conjunto de resultados.
+
+SELECT coluna1, coluna2, ...
+FROM nome_da_tabela;
+
+#coluna1, coluna2, ... são os nomes dos campos da tabela da qual você deseja selecionar os dados. Se você quiser selecionar #todos os campos disponíveis na tabela, use a seguinte sintaxe:
+
+SELECT * FROM nome_da_tabela; 
+
+
+#A instrução UPDATE é usada para modificar os registros existentes em uma tabela.
+
+UPDATE nome_da_tabela
+SET coluna1 = valor1, coluna2 = valor2, ...
+WHERE condicao;
+
+
+#A instrução DELETE é usada para excluir registros existentes em uma tabela.
+
+DELETE FROM nome_da_tabela WHERE condicao;
+
 ```
