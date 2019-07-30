@@ -46,8 +46,10 @@ fonte("https://git-scm.com/docs")
 
 ```sql
 #A instrução CREATE DATABASE é usada para criar um novo banco de dados SQL.
-
 CREATE DATABASE nome_do_banco;
+
+#A instrução DROP DATABASE é usada para eliminar um banco de dados SQL existente.
+DROP DATABASE nome_do_banco;
 
 #A instrução CREATE TABLE é usada para criar uma nova tabela em um banco de dados.
 
@@ -59,7 +61,7 @@ CREATE TABLE table_name (
 );
 #exemplo
 CREATE TABLE pessoas (
-    PessoaID int,
+    PessoaID int primary key auto_increment not null,
     Nome varchar(255),
     Sobrenome varchar(255),
     Endereco varchar(255),
@@ -120,5 +122,23 @@ WHERE condicao;
 SELECT SUM(nome_da_coluna)
 FROM nome_da_tabela
 WHERE condicao;
+
+#O operador LIKE é usado em uma cláusula WHERE para procurar um padrão especificado em uma coluna.
+
+#Existem dois curingas geralmente usados ​​em conjunto com o operador LIKE:
+
+# % - O sinal de porcentagem representa zero, um ou vários caracteres
+# _ - O sublinhado representa um único caractere
+
+SELECT coluna1, coluna2, ...
+FROM nome_da_tabela
+WHERE colunaN LIKE pattern;
+
+#Exemplo
+
+#A seguinte instrução SQL seleciona todos os clientes com um CustomerName começando com "a":
+
+SELECT * FROM nome_da_tabela
+WHERE nome-da_coluna LIKE 'a%';
 ```
 fonte('https://www.w3schools.com/sql/default.asp')
