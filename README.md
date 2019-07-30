@@ -46,6 +46,27 @@ git push
 # Comandos SQL
 
 ```sql
+#A instrução CREATE DATABASE é usada para criar um novo banco de dados SQL.
+
+CREATE DATABASE nome_do_banco;
+
+#A instrução CREATE TABLE é usada para criar uma nova tabela em um banco de dados.
+
+CREATE TABLE table_name (
+    coluna1 tipoDeDado,
+    coluna2 tipoDeDado,
+    coluna3 tipoDeDado,
+   ....
+);
+#exemplo
+CREATE TABLE pessoas (
+    PessoaID int,
+    Nome varchar(255),
+    Sobrenome varchar(255),
+    Endereco varchar(255),
+    Cidade varchar(255) 
+);
+
 #A instrução INSERT INTO é usada para inserir novos registros em uma tabela.
 #É possível escrever a instrução INSERT INTO de duas maneiras.
 #A primeira maneira especifica os nomes das colunas e os valores a serem inseridos:
@@ -81,4 +102,23 @@ WHERE condicao;
 
 DELETE FROM nome_da_tabela WHERE condicao;
 
+
+#A função COUNT () retorna o número de linhas que corresponde a um critério especificado.
+#A função AVG () retorna o valor médio de uma coluna numérica.
+#A função SUM () retorna a soma total de uma coluna numérica.
+
+#Sintaxe COUNT ()
+SELECT COUNT(nome_da_coluna)
+FROM nome_da_tabela
+WHERE condicao;
+
+#Sintaxe AVG ()
+SELECT AVG(nome_da_coluna)
+FROM nome_da_tabela
+WHERE condicao;
+
+#Sintaxe SUM ()
+SELECT SUM(nome_da_coluna)
+FROM nome_da_tabela
+WHERE condicao;
 ```
