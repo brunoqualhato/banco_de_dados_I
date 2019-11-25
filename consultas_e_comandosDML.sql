@@ -25,3 +25,19 @@ FROM   ator A
        LEFT JOIN serie F
               ON F.id = ES.idserie
 WHERE  ES.idator = NULL;
+
+select * from producao where id =1;
+update producao set nome = 'Irineu', cargo = 'você não sabe e nem eu', foto = '/home/usuario/img/foto.png' where id = 1;
+update producao set foto = '/home/usuario/img/foto2.png' where id = 1;
+
+select * from epsodio where id = 1;
+delete from epsodio where id = 1;
+
+select * from epsodio where temporada = 1;
+-- Desabilitando(0) e Habilitando(1) as constraints de chave estrangeira
+-- SET foreign_key_checks = 0;
+delete from temporada where id = 1;
+delete from epsodio where temporada = 1;
+-- update epsodio set temporada = 2 where temporada = 1;
+
+
