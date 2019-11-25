@@ -1,24 +1,12 @@
 drop database bibliografia;
--- MySQL Workbench Forward Engineering
-
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
--- -----------------------------------------------------
--- Schema bibliografia
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema bibliografia
--- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `bibliografia` DEFAULT CHARACTER SET utf8 ;
 USE `bibliografia` ;
 
+
 -- -----------------------------------------------------
--- Table `bibliografia`.`paises`
+-- Table `bibliografia`.`pais`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`paises` (
+CREATE TABLE IF NOT EXISTS `bibliografia`.`pais` (
   `id` INT NOT NULL,
   `nome` VARCHAR(60) NOT NULL,
   `nome_pt` VARCHAR(60) NOT NULL,
@@ -27,13 +15,14 @@ CREATE TABLE IF NOT EXISTS `bibliografia`.`paises` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO paises(id,nome,nome_pt,sigla,bancen) values
+INSERT INTO pais(id,nome,nome_pt,sigla,bancen) values
 (1, 'Brazil', 'Brasil', 'BR', 1058);
 
+
 -- -----------------------------------------------------
--- Table `bibliografia`.`estados`
+-- Table `bibliografia`.`estado`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`estados` (
+CREATE TABLE IF NOT EXISTS `bibliografia`.`estado` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(75) NOT NULL,
   `uf` VARCHAR(2) NOT NULL,
@@ -41,15 +30,16 @@ CREATE TABLE IF NOT EXISTS `bibliografia`.`estados` (
   `pais` INT NOT NULL,
   `ddd` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_estados_paises1_idx` (`pais` ASC),
-  CONSTRAINT `fk_estados_paises1`
+   INDEX `fk_estado_pais1_idx` (`pais` ASC),
+  CONSTRAINT `fk_estado_pais1`
     FOREIGN KEY (`pais`)
-    REFERENCES `bibliografia`.`paises` (`id`)
+    REFERENCES `bibliografia`.`pais` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO estados(nome,uf,ibge,pais,ddd) values
+
+INSERT INTO estado(nome,uf,ibge,pais,ddd) values
 ('Acre', 'AC', 12, 1, '68'),
 ('Alagoas', 'AL', 27, 1, '82'),
 ('Amazonas', 'AM', 13, 1, '97,92'),
@@ -78,24 +68,27 @@ INSERT INTO estados(nome,uf,ibge,pais,ddd) values
 ('São Paulo', 'SP', 35, 1, '11,12,13,14,15,16,17,18,19'),
 ('Tocantins', 'TO', 17, 1, '63');
 
+
+
+
 -- -----------------------------------------------------
 -- Table `bibliografia`.`cidade`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bibliografia`.`cidade` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
-  `uf` INT NOT NULL,
+  `iduf` INT NOT NULL,
   `ibge` INT(7) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_cidade_estados1_idx` (`uf` ASC),
-  CONSTRAINT `fk_cidade_estados1`
-    FOREIGN KEY (`uf`)
-    REFERENCES `bibliografia`.`estados` (`id`)
+  INDEX `fk_cidade_estado1_idx` (`iduf` ASC),
+  CONSTRAINT `fk_cidade_estado1`
+    FOREIGN KEY (`iduf`)
+    REFERENCES `bibliografia`.`estado` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO cidade(id,nome,uf,ibge) values
+INSERT INTO cidade(id,nome,iduf,ibge) values
 (1, 'Afonso Cláudio', 8, 3200102),
 (2, 'Água Doce do Norte', 8, 3200169),
 (3, 'Águia Branca', 8, 3200136),
@@ -5691,11 +5684,12 @@ INSERT INTO cidade(id,nome,uf,ibge) values
 (5608, 'Balneário Rincão', 24, 4220000),
 (5609, 'Pescaria Brava', 24, 4212650);
 
+
 -- -----------------------------------------------------
--- Table `bibliografia`.`filmes`
+-- Table `bibliografia`.`filme`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`filmes` (
-  `idfilmes` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `bibliografia`.`filme` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(50) NOT NULL,
   `popularidade` VARCHAR(45) NOT NULL,
   `data_lancamento` DATE NOT NULL,
@@ -5703,10 +5697,10 @@ CREATE TABLE IF NOT EXISTS `bibliografia`.`filmes` (
   `descricao` VARCHAR(100) NOT NULL,
   `votos` INT NOT NULL,
   `media_votos` DOUBLE NOT NULL,
-  PRIMARY KEY (`idfilmes`))
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO filmes(titulo,popularidade,data_lancamento,diretorio_poster,descricao,votos,media_votos) values
+INSERT INTO filme(titulo,popularidade,data_lancamento,diretorio_poster,descricao,votos,media_votos) values
 ('E.T. the Extra-Terrestrial','boa','1982-12-25','C:/POSTERS/FILMES','Classico',14500,140),
 ('Independence Day','boa','1996-08-01','C:/POSTERS/FILMES','Bom filme',10000,100),
 ('The Matrix','otimo','1999-05-21','C:/POSTERS/FILMES','Incrivel',25000,250),
@@ -5724,16 +5718,17 @@ INSERT INTO filmes(titulo,popularidade,data_lancamento,diretorio_poster,descrica
 ('The Birth of a Nation','ruim','2002-04-01','C:/POSTERS/FILMES','Bom filme governamental',9000,90),
 ('The Bodyguard','boa','2000-08-30','C:/POSTERS/FILMES','Bom drama',11000,110);
 
+
 -- -----------------------------------------------------
--- Table `bibliografia`.`generos`
+-- Table `bibliografia`.`genero`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`generos` (
-  `idgeneros` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `bibliografia`.`genero` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(25) NOT NULL,
-  PRIMARY KEY (`idgeneros`))
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO generos(nome) values
+INSERT INTO genero(nome) values
 ('Ação'),
 ('Aventura'),
 ('Animação'),
@@ -5754,28 +5749,29 @@ INSERT INTO generos(nome) values
 ('Guerra'),
 ('Faroeste');
 
+
 -- -----------------------------------------------------
--- Table `bibliografia`.`filmes_has_generos`
+-- Table `bibliografia`.`filme_has_genero`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`filmes_has_generos` (
-  `filmes_idfilmes` INT NOT NULL,
-  `generos_idgeneros` INT NOT NULL,
-  PRIMARY KEY (`filmes_idfilmes`, `generos_idgeneros`),
-  INDEX `fk_filmes_has_generos_generos1_idx` (`generos_idgeneros` ASC),
-  INDEX `fk_filmes_has_generos_filmes1_idx` (`filmes_idfilmes` ASC),
-  CONSTRAINT `fk_filmes_has_generos_filmes1`
-    FOREIGN KEY (`filmes_idfilmes`)
-    REFERENCES `bibliografia`.`filmes` (`idfilmes`)
+CREATE TABLE IF NOT EXISTS `bibliografia`.`filme_has_genero` (
+  `idfilme` INT NOT NULL,
+  `idgenero` INT NOT NULL,
+  PRIMARY KEY (`idfilme`, `idgenero`),
+  INDEX `fk_filme_has_genero_genero1_idx` (`idgenero` ASC),
+  INDEX `fk_filme_has_genero_filme1_idx` (`idfilme` ASC),
+  CONSTRAINT `fk_filme_has_genero_filme1`
+    FOREIGN KEY (`idfilme`)
+    REFERENCES `bibliografia`.`filme` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_filmes_has_generos_generos1`
-    FOREIGN KEY (`generos_idgeneros`)
-    REFERENCES `bibliografia`.`generos` (`idgeneros`)
+  CONSTRAINT `fk_filme_has_genero_genero1`
+    FOREIGN KEY (`idgenero`)
+    REFERENCES `bibliografia`.`genero` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO filmes_has_generos(filmes_idfilmes,generos_idgeneros) values
+INSERT INTO filme_has_genero(idfilme,idgenero) values
 (1,7),
 (2,1),
 (3,1),
@@ -5793,24 +5789,25 @@ INSERT INTO filmes_has_generos(filmes_idfilmes,generos_idgeneros) values
 (15,6),
 (16,7);
 
+
 -- -----------------------------------------------------
 -- Table `bibliografia`.`produtora`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bibliografia`.`produtora` (
-  `idprodutora` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(30) NOT NULL,
-  `cidade_sede` INT NOT NULL,
+  `idcidade_sede` INT NOT NULL,
   `site` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idprodutora`),
-  INDEX `fk_produtora_cidade1_idx` (`cidade_sede` ASC),
+  PRIMARY KEY (`id`),
+  INDEX `fk_produtora_cidade1_idx` (`idcidade_sede` ASC),
   CONSTRAINT `fk_produtora_cidade1`
-    FOREIGN KEY (`cidade_sede`)
+    FOREIGN KEY (`idcidade_sede`)
     REFERENCES `bibliografia`.`cidade` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO produtora(nome,cidade_sede,site) values
+INSERT INTO produtora(nome,idcidade_sede,site) values
 ('Dreamworks',15,'www.dreamworks.com'),
 ('Metro Goldwyn Mayer',77,'www.mgm.com'),
 ('The Weinstein Company',89,'www.weinsteinco.com'),
@@ -5822,28 +5819,29 @@ INSERT INTO produtora(nome,cidade_sede,site) values
 ('Time Warner',753,'www.warnermediagroup.com'),
 ('Sony Pictures Entertainment',159,'www,sonypictures.com');
 
+
 -- -----------------------------------------------------
--- Table `bibliografia`.`filmes_has_produtora`
+-- Table `bibliografia`.`filme_has_produtora`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`filmes_has_produtora` (
-  `filmes_idfilmes` INT NOT NULL,
-  `produtora_idprodutora` INT NOT NULL,
-  PRIMARY KEY (`filmes_idfilmes`, `produtora_idprodutora`),
-  INDEX `fk_filmes_has_produtora_produtora1_idx` (`produtora_idprodutora` ASC),
-  INDEX `fk_filmes_has_produtora_filmes1_idx` (`filmes_idfilmes` ASC),
-  CONSTRAINT `fk_filmes_has_produtora_filmes1`
-    FOREIGN KEY (`filmes_idfilmes`)
-    REFERENCES `bibliografia`.`filmes` (`idfilmes`)
+CREATE TABLE IF NOT EXISTS `bibliografia`.`filme_has_produtora` (
+  `idfilme` INT NOT NULL,
+  `idprodutora` INT NOT NULL,
+  PRIMARY KEY (`idfilme`, `idprodutora`),
+  INDEX `fk_filme_has_produtora_produtora1_idx` (`idprodutora` ASC) ,
+  INDEX `fk_filme_has_produtora_filme1_idx` (`idfilme` ASC ) ,
+  CONSTRAINT `fk_filme_has_produtora_filme1`
+    FOREIGN KEY (`idfilme`)
+    REFERENCES `bibliografia`.`filme` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_filmes_has_produtora_produtora1`
-    FOREIGN KEY (`produtora_idprodutora`)
-    REFERENCES `bibliografia`.`produtora` (`idprodutora`)
+  CONSTRAINT `fk_filme_has_produtora_produtora1`
+    FOREIGN KEY (`idprodutora`)
+    REFERENCES `bibliografia`.`produtora` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO filmes_has_produtora(filmes_idfilmes,produtora_idprodutora) values
+INSERT INTO filme_has_produtora(idfilme,idprodutora) values
 (1,7),
 (2,6),
 (3,9),
@@ -5861,28 +5859,31 @@ INSERT INTO filmes_has_produtora(filmes_idfilmes,produtora_idprodutora) values
 (15,1),
 (16,5);
 
+
+
+
 -- -----------------------------------------------------
--- Table `bibliografia`.`cidade_has_filmes`
+-- Table `bibliografia`.`cidade_has_filme`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`cidade_has_filmes` (
-  `cidade_idcidade` INT NOT NULL,
-  `filmes_idfilmes` INT NOT NULL,
-  PRIMARY KEY (`cidade_idcidade`, `filmes_idfilmes`),
-  INDEX `fk_cidade_has_filmes_filmes1_idx` (`filmes_idfilmes` ASC),
-  INDEX `fk_cidade_has_filmes_cidade1_idx` (`cidade_idcidade` ASC),
-  CONSTRAINT `fk_cidade_has_filmes_cidade1`
-    FOREIGN KEY (`cidade_idcidade`)
+CREATE TABLE IF NOT EXISTS `bibliografia`.`cidade_has_filme` (
+  `idcidade` INT NOT NULL,
+  `idfilme` INT NOT NULL,  
+  PRIMARY KEY (`idcidade`, `idfilme`),
+  INDEX `fk_cidade_has_filme_filme1_idx` (`idfilme` ASC),
+  INDEX `fk_cidade_has_filme_cidade1_idx` (`idcidade` ASC),
+  CONSTRAINT `fk_cidade_has_filme_cidade1`
+    FOREIGN KEY (`idcidade`)
     REFERENCES `bibliografia`.`cidade` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cidade_has_filmes_filmes1`
-    FOREIGN KEY (`filmes_idfilmes`)
-    REFERENCES `bibliografia`.`filmes` (`idfilmes`)
+  CONSTRAINT `fk_cidade_has_filme_filmes1`
+    FOREIGN KEY (`idfilme`)
+    REFERENCES `bibliografia`.`filme` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO cidade_has_filmes(cidade_idcidade,filmes_idfilmes) values
+INSERT INTO cidade_has_filme(idcidade,idfilme) values
 (32,1),
 (58,2),
 (110,3),
@@ -5901,20 +5902,20 @@ INSERT INTO cidade_has_filmes(cidade_idcidade,filmes_idfilmes) values
 (933,16);
 
 -- -----------------------------------------------------
--- Table `bibliografia`.`series`
+-- Table `bibliografia`.`serie`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`series` (
-  `idseries` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `bibliografia`.`serie` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(30) NOT NULL,
   `em_producao` TINYINT(1) NOT NULL,
   `ultima_temporada` DATE NOT NULL,
   `descricao` VARCHAR(300) NOT NULL,
   `poster` VARCHAR(40) NOT NULL,
   `populariadade` DOUBLE(2,1) NOT NULL,
-  PRIMARY KEY (`idseries`))
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO series(nome,em_producao,ultima_temporada,descricao,poster,populariadade) values
+INSERT INTO serie(nome,em_producao,ultima_temporada,descricao,poster,populariadade) values
 ('Armagedon',1,'2019-06-15','Boa serie cientifica','C:/POSTERS/SERIES',7.5),
 ('Apocalypse',0,'2018-10-30','Interessante','C:/POSTERS/SERIES',8.0),
 ('Armada',0,'2018-05-15','Passa bem o tempo','C:/POSTERS/SERIES',7.0),
@@ -5927,26 +5928,27 @@ INSERT INTO series(nome,em_producao,ultima_temporada,descricao,poster,populariad
 ('Pokemon',1,'2019-11-23','Classico','C:/POSTERS/SERIES',9.9),
 ('Imperador Celestial',0,'2018-09-14','Mitologia chinesa','C:/POSTERS/SERIES',8.5);
 
+
 -- -----------------------------------------------------
--- Table `bibliografia`.`temporadas`
+-- Table `bibliografia`.`temporada`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`temporadas` (
-  `idtemporadas` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `bibliografia`.`temporada` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(30) NOT NULL,
   `numero_epsodios` INT NOT NULL,
-  `series_idseries` INT NOT NULL,
+  `idserie` INT NOT NULL,
   `data_lancamento` DATE NOT NULL,
   `descricao` VARCHAR(300) NOT NULL,
-  PRIMARY KEY (`idtemporadas`),
-  INDEX `fk_temporadas_series1_idx` (`series_idseries` ASC),
-  CONSTRAINT `fk_temporadas_series1`
-    FOREIGN KEY (`series_idseries`)
-    REFERENCES `bibliografia`.`series` (`idseries`)
+  PRIMARY KEY (`id`),
+  INDEX `fk_temporada_serie1_idx` (`idserie` ASC),
+  CONSTRAINT `fk_temporada_serie1`
+    FOREIGN KEY (`idserie`)
+    REFERENCES `bibliografia`.`serie` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO temporadas (nome, numero_epsodios, series_idseries, data_lancamento, descricao) values
+INSERT INTO temporada (nome, numero_epsodios, idserie, data_lancamento, descricao) values
 ('Primeira',15,1,'2014/10/15','very nice bro'),
 ('Segunda',8,2,'2017/08/11','Todo Edson é frufru'),
 ('Terceira',10,3,'2016/07/16)','Adeus gugu'),
@@ -5958,33 +5960,33 @@ INSERT INTO temporadas (nome, numero_epsodios, series_idseries, data_lancamento,
 ('Nona',20,9,'2010/02/10','KKKK'),
 ('Décima',10,10,'2010/10/10','AOSKAOS'),
 ('DÉCIMA PRIMEIRA',8,11,'2014/02/28','cá estamos nós'),
-('Décima segunda',9,12,'2015/05/15','Saravá Arrancalhe'),
-('Décima terceira',10,13,'2018/04/10','Carapicuiba'),
-('Décima quarta',14,14,'2014/04/14','YODLAY'),
-('Décima quinta',15,15,'2015/05/15','ACABOUUU, É TETRAAAA');
+('Décima segunda',9,11,'2015/05/15','Saravá Arrancalhe'),
+('Décima terceira',10,11,'2018/04/10','Carapicuiba'),
+('Décima quarta',14,4,'2014/04/14','YODLAY'),
+('Décima quinta',15,1,'2015/05/15','ACABOUUU, É TETRAAAA');
 
 -- -----------------------------------------------------
--- Table `bibliografia`.`produtora_has_series`
+-- Table `bibliografia`.`produtora_has_serie`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`produtora_has_series` (
-  `produtora_idprodutora` INT NOT NULL,
-  `series_idseries` INT NOT NULL,
-  PRIMARY KEY (`produtora_idprodutora`, `series_idseries`),
-  INDEX `fk_produtora_has_series_series1_idx` (`series_idseries` ASC),
-  INDEX `fk_produtora_has_series_produtora1_idx` (`produtora_idprodutora` ASC),
-  CONSTRAINT `fk_produtora_has_series_produtora1`
-    FOREIGN KEY (`produtora_idprodutora`)
-    REFERENCES `bibliografia`.`produtora` (`idprodutora`)
+CREATE TABLE IF NOT EXISTS `bibliografia`.`produtora_has_serie` (
+  `idprodutora` INT NOT NULL,
+  `idserie` INT NOT NULL,
+  PRIMARY KEY (`idprodutora`, `idserie`),
+  INDEX `fk_produtora_has_serie_serie1_idx` (`idserie` ASC),
+  INDEX `fk_produtora_has_serie_produtora1_idx` (`idprodutora` ASC) ,
+  CONSTRAINT `fk_produtora_has_serie_produtora1`
+    FOREIGN KEY (`idprodutora`)
+    REFERENCES `bibliografia`.`produtora` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_produtora_has_series_series1`
-    FOREIGN KEY (`series_idseries`)
-    REFERENCES `bibliografia`.`series` (`idseries`)
+  CONSTRAINT `fk_produtora_has_serie_serie1`
+    FOREIGN KEY (`idserie`)
+    REFERENCES `bibliografia`.`serie` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO produtora_has_series(produtora_idprodutora,series_idseries) values
+INSERT INTO produtora_has_serie(idprodutora,idserie) values
 (9,1),
 (5,2),
 (3,3),
@@ -5997,28 +5999,29 @@ INSERT INTO produtora_has_series(produtora_idprodutora,series_idseries) values
 (8,10),
 (10,11);
 
+
 -- -----------------------------------------------------
--- Table `bibliografia`.`generos_has_series`
+-- Table `bibliografia`.`generos_has_serie`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`generos_has_series` (
-  `generos_idgeneros` INT NOT NULL,
-  `series_idseries` INT NOT NULL,
-  PRIMARY KEY (`generos_idgeneros`, `series_idseries`),
-  INDEX `fk_generos_has_series_series1_idx` (`series_idseries` ASC),
-  INDEX `fk_generos_has_series_generos1_idx` (`generos_idgeneros` ASC),
-  CONSTRAINT `fk_generos_has_series_generos1`
-    FOREIGN KEY (`generos_idgeneros`)
-    REFERENCES `bibliografia`.`generos` (`idgeneros`)
+CREATE TABLE IF NOT EXISTS `bibliografia`.`genero_has_serie` (
+  `idgenero` INT NOT NULL,
+  `idserie` INT NOT NULL,
+  PRIMARY KEY (`idgenero`, `idserie`),
+  INDEX `fk_genero_has_serie_serie1_idx` (`idserie` ASC) ,
+  INDEX `fk_genero_has_serie_genero1_idx` (`idgenero` ASC) ,
+  CONSTRAINT `fk_genero_has_serie_genero1`
+    FOREIGN KEY (`idgenero`)
+    REFERENCES `bibliografia`.`genero` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_generos_has_series_series1`
-    FOREIGN KEY (`series_idseries`)
-    REFERENCES `bibliografia`.`series` (`idseries`)
+  CONSTRAINT `fk_genero_has_serie_serie1`
+    FOREIGN KEY (`idserie`)
+    REFERENCES `bibliografia`.`serie` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO generos_has_series(generos_idgeneros,series_idseries) values
+INSERT INTO genero_has_serie(idgenero,idserie) values
 (15,1),
 (15,2),
 (18,3),
@@ -6030,6 +6033,7 @@ INSERT INTO generos_has_series(generos_idgeneros,series_idseries) values
 (6,9),
 (3,10),
 (10,11);
+
 
 -- -----------------------------------------------------
 -- Table `bibliografia`.`servico_streaming`
@@ -6049,29 +6053,28 @@ INSERT INTO servico_streaming(`nome`,`site`) values
 ('iTunes Store','https://www.apple.com/br/itunes/'),
 ('El Plus','https://www.eiplus.com.br');
 
-
 -- -----------------------------------------------------
--- Table `bibliografia`.`filmes_has_servico_streaming`
+-- Table `bibliografia`.`filme_has_servico_streaming`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`filmes_has_servico_streaming` (
-  `filmes_idfilmes` INT NOT NULL,
-  `servico_streaming_idservico_streaming` INT NOT NULL,
-  PRIMARY KEY (`filmes_idfilmes`, `servico_streaming_idservico_streaming`),
-  INDEX `fk_filmes_has_servico_streaming_servico_streaming1_idx` (`servico_streaming_idservico_streaming` ASC),
-  INDEX `fk_filmes_has_servico_streaming_filmes1_idx` (`filmes_idfilmes` ASC),
-  CONSTRAINT `fk_filmes_has_servico_streaming_filmes1`
-    FOREIGN KEY (`filmes_idfilmes`)
-    REFERENCES `bibliografia`.`filmes` (`idfilmes`)
+CREATE TABLE IF NOT EXISTS `bibliografia`.`filme_has_servico_streaming` (
+  `idfilme` INT NOT NULL,
+  `idservico_streaming` INT NOT NULL,
+  PRIMARY KEY (`idfilme`, `idservico_streaming`),
+  INDEX `fk_filme_has_servico_streaming_servico_streaming1_idx` (`idservico_streaming` ASC),
+  INDEX `fk_filme_has_servico_streaming_filme1_idx` (`idfilme` ASC) ,
+  CONSTRAINT `fk_filme_has_servico_streaming_filme1`
+    FOREIGN KEY (`idfilme`)
+    REFERENCES `bibliografia`.`filme` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_filmes_has_servico_streaming_servico_streaming1`
-    FOREIGN KEY (`servico_streaming_idservico_streaming`)
+    FOREIGN KEY (`idservico_streaming`)
     REFERENCES `bibliografia`.`servico_streaming` (`idservico_streaming`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO filmes_has_servico_streaming(filmes_idfilmes,servico_streaming_idservico_streaming) values
+INSERT INTO filme_has_servico_streaming(idfilme,idservico_streaming) values
 (1,2),
 (2,3),
 (3,1),
@@ -6089,28 +6092,29 @@ INSERT INTO filmes_has_servico_streaming(filmes_idfilmes,servico_streaming_idser
 (15,6),
 (16,6);
 
+
 -- -----------------------------------------------------
--- Table `bibliografia`.`series_has_servico_streaming`
+-- Table `bibliografia`.`serie_has_servico_streaming`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`series_has_servico_streaming` (
-  `series_idseries` INT NOT NULL,
-  `servico_streaming_idservico_streaming` INT NOT NULL,
-  PRIMARY KEY (`series_idseries`, `servico_streaming_idservico_streaming`),
-  INDEX `fk_series_has_servico_streaming_servico_streaming1_idx` (`servico_streaming_idservico_streaming` ASC),
-  INDEX `fk_series_has_servico_streaming_series1_idx` (`series_idseries` ASC),
-  CONSTRAINT `fk_series_has_servico_streaming_series1`
-    FOREIGN KEY (`series_idseries`)
-    REFERENCES `bibliografia`.`series` (`idseries`)
+CREATE TABLE IF NOT EXISTS `bibliografia`.`serie_has_servico_streaming` (
+  `idserie` INT NOT NULL,
+  `idservico_streaming` INT NOT NULL,
+  PRIMARY KEY (`idserie`, `idservico_streaming`),
+  INDEX `fk_serie_has_servico_streaming_servico_streaming1_idx` (`idservico_streaming` ASC) ,
+  INDEX `fk_serie_has_servico_streaming_serie1_idx` (`idserie` ASC),
+  CONSTRAINT `fk_serie_has_servico_streaming_serie1`
+    FOREIGN KEY (`idserie`)
+    REFERENCES `bibliografia`.`serie` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_series_has_servico_streaming_servico_streaming1`
-    FOREIGN KEY (`servico_streaming_idservico_streaming`)
+  CONSTRAINT `fk_serie_has_servico_streaming_servico_streaming1`
+    FOREIGN KEY (`idservico_streaming`)
     REFERENCES `bibliografia`.`servico_streaming` (`idservico_streaming`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO series_has_servico_streaming(series_idseries,servico_streaming_idservico_streaming) values
+INSERT INTO serie_has_servico_streaming(idserie,idservico_streaming) values
 (1,1),
 (2,2),
 (3,3),
@@ -6124,19 +6128,19 @@ INSERT INTO series_has_servico_streaming(series_idseries,servico_streaming_idser
 (11,6);
 
 -- -----------------------------------------------------
--- Table `bibliografia`.`atores`
+-- Table `bibliografia`.`ator`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`atores` (
-  `idatores` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `bibliografia`.`ator` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(60) NOT NULL,
   `biografia` VARCHAR(200) NOT NULL,
   `popularidade` DOUBLE(2,1) NOT NULL,
   `foto` VARCHAR(70) NOT NULL,
   `data_nascimento` DATE NOT NULL,
-  PRIMARY KEY (`idatores`))
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO atores(nome,biografia,popularidade,foto,data_nascimento) values
+INSERT INTO ator(nome,biografia,popularidade,foto,data_nascimento) values
 ('Ana Ohana','Desde a infancia sonhava em ser atriz',8.5,'C;/FOTOS/ATORES','1995-07-07'),
 ('Amanda Santa','Percebeu que tinha um talento para ser atriz',8.0,'C:/FOTOS/ATORES','1992-09-01'),
 ('Ash Ketchun','Jamais desistiu de seu senho e hoje esta entres os melhores',9.9,'C:/FOTOS/ATORES','1999-04-22'),
@@ -6147,30 +6151,70 @@ INSERT INTO atores(nome,biografia,popularidade,foto,data_nascimento) values
 ('Cleiton Rasta','Alem de suas musicas e um grande ator',8.9,'C:/FOTOS/ATORES','1997-09-10'),
 ('Carvalho Brito','Sabia que era destinado a gradeza neste ramo e decidiu seguir em frente',9.7,'C:/FOTOS/ATORES','1992-01-01'),
 ('Keanu Reeves','You are Breathtaking',9.9,'C:/FOTOS/ATORES','1964-09-02'),
-('Johnny Bravo','Com seu grnade fisico e um ator muito famoso',8.7,'C:/FOTOS/ATORES','1995-03-26');
+('Johnny Bravo','Com seu grnade fisico e um ator muito famoso',8.7,'C:/FOTOS/ATORES','1995-03-26'),
+('Dylan Wright','Renomado',8.5,'C:/FOTOS/ATORES','2000-08-15'),
+('Adam Smith','Ganhador de oscar',9.3,'C:/FOTOS/ATORES','1982-05-14'),
+('Alvin Johnson','Tambem e piloto de formula um',6.0,'C:/FOTOS/ATORES','1993-04-15'),
+('Andrew Williams','Grande pai',7.0,'C:/FOTOS/ATORES','1999-05-05'),
+('Ashley Jones','Bela cantora',7.5,'C:/FOTOS/ATORES','1985-01-25'),
+('Adele Scott','Grande mestre cuca',7.6,'C:/FOTOS/ATORES','1990-04-15'),
+('Agnella Hall','Grande arquiteta',8.4,'C:/FOTOS/ATORES','1994-06-04'),
+('Darla Adams','Colecionadora',4.3,'C:/FOTOS/ATORES','2000-08-04'),
+('Justine Carter','Ama uma praia',8.4,'C:/FOTOS/ATORES','1996-07-15'),
+('Julie Mitchell','Adora viajar',9.1,'C:/FOTOS/ATORES','1999-07-22'),
+('Kenzie Parker','Estilista incrivel',9.2,'C:/FOTOS/ATORES','1997-06-25'),
+('Antony Evans','Professor',9.3,'C:/FOTOS/ATORES','1973-02-19'),
+('Arnold Edwards','Gosta de misterios',7.4,'C:/FOTOS/ATORES','1984-04-28'),
+('Bernard Collins','Prefere futebol brazileiro',7.4,'C:/FOTOS/ATORES','1999-08-29'),
+('Bryan Stewart','Grande patinador',7.0,'C:/FOTOS/ATORES','1997-01-01'),
+('Calvin Morris','Esquiador',6.0,'C:/FOTOS/ATORES','1999-07-01'),
+('Katherine Reed','Escaladora',6.9,'C:/FOTOS/ATORES','1970-04-11'),
+('Katie Moore','Praticadora de esgrima',9.0,'C:/FOTOS/ATORES','1989-02-17'),
+('Mary Cooper','Adora sua familia',9.0,'C:/FOTOS/ATORES','1994-12-30'),
+('Melanie Taylor','Amo o marshmallow',7.5,'C:/FOTOS/ATORES','1999-10-24'),
+('Sophie Jackson','pesquisadora inovadora',6.8,'C:/FOTOS/ATORES','1997-01-25'),
+('Stephanie White','Pesca nos fins de semana',6.2,'C:/FOTOS/ATORES','1984-04-25'),
+('Susan Harris','Pratica bang jump',7.4,'C:/FOTOS/ATORES','1980-05-19'),
+('Wendy Thompson','Gosta da cultura japonesa',6.1,'C:/FOTOS/ATORES','1990-04-30'),
+('Tom Martinez','Otaku',9.2,'C:/FOTOS/ATORES','1991-07-17'),
+('Oliver Torres','Praticador de box',8.0,'C:/FOTOS/ATORES','1989-05-06'),
+('Patrick Watson','Rapper',2.4,'C:/FOTOS/ATORES','1982-02-04'),
+('Richard Sanders','Prefere morar na natureza',3.2,'C:/FOTOS/ATORES','1981-08-15'),
+('David Bennett','vegano',7.5,'C:/FOTOS/ATORES','1987-07-18'),
+('Robert Lee','Faz suas proprias roupas',9.2,'C:/FOTOS/ATORES','1998-12-05'),
+('Steve Baker','Fisico quantico',4.2,'C:/FOTOS/ATORES','1999-12-25'),
+('Thierry Barnes','Cacador',7.1,'C:/FOTOS/ATORES','2000-12-25'),
+('Enrico Ross','Adora comida mexicana',6.2,'C:/FOTOS/ATORES','1960-05-17'),
+('Eric Jenkins','prefere a culinaria canadense',5.2,'C:/FOTOS/ATORES','1984-09-19'),
+('Emma Patterson','Foi encantada belo Brazil',4.3,'C:/FOTOS/ATORES','1974-05-20'),
+('Francine Hughes','Adimira a tradicao china',9.1,'C:/FOTOS/ATORES','1985-04-15'),
+('Karolyn Simmons','Estuda a mitologia grega',8.2,'C:/FOTOS/ATORES','1989-09-12'),
+('Katelyn Foster','Mora na mansao foster para amigos imaginarios',8.2,'C:/FOTOS/ATORES','1999-01-30'),
+('Michael Jackson','HII HII',9.0,'C:/FOTOS/ATORES','1958-07-29'),
+('Darla Griffin','Sempre quis ir para hogwarts',9.5,'C:/FOTOS/ATORES','1978-11-11');
 
 -- -----------------------------------------------------
 -- Table `bibliografia`.`elenco_filme`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bibliografia`.`elenco_filme` (
-  `atores_idatores` INT NOT NULL,
-  `filmes_idfilmes` INT NOT NULL,
-  PRIMARY KEY (`atores_idatores`, `filmes_idfilmes`),
-  INDEX `fk_atores_has_filmes_filmes1_idx` (`filmes_idfilmes` ASC),
-  INDEX `fk_atores_has_filmes_atores1_idx` (`atores_idatores` ASC),
-  CONSTRAINT `fk_atores_has_filmes_atores1`
-    FOREIGN KEY (`atores_idatores`)
-    REFERENCES `bibliografia`.`atores` (`idatores`)
+  `idator` INT NOT NULL,
+  `idfilme` INT NOT NULL,
+  PRIMARY KEY (`idator`, `idfilme`),
+  INDEX `fk_ator_has_filme_filme1_idx` (`idfilme` ASC) ,
+  INDEX `fk_ator_has_filme_atore1_idx` (`idator` ASC) ,
+  CONSTRAINT `fk_ator_has_filme_ator1`
+    FOREIGN KEY (`idator`)
+    REFERENCES `bibliografia`.`ator` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_atores_has_filmes_filmes1`
-    FOREIGN KEY (`filmes_idfilmes`)
-    REFERENCES `bibliografia`.`filmes` (`idfilmes`)
+  CONSTRAINT `fk_atore_has_filme_filmes1`
+    FOREIGN KEY (`idfilme`)
+    REFERENCES `bibliografia`.`filme` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO elenco_filme(atores_idatores,filmes_idfilmes) values
+INSERT INTO elenco_filme(idator,idfilme) values
 (1,1),
 (7,2),
 (6,3),
@@ -6187,29 +6231,28 @@ INSERT INTO elenco_filme(atores_idatores,filmes_idfilmes) values
 (5,14),
 (2,15),
 (3,16);
-
 -- -----------------------------------------------------
--- Table `bibliografia`.`series_elenco`
+-- Table `bibliografia`.`serie_elenco`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`series_elenco` (
-  `series_idseries` INT NOT NULL,
-  `atores_idatores` INT NOT NULL,
-  PRIMARY KEY (`series_idseries`, `atores_idatores`),
-  INDEX `fk_series_has_atores_atores1_idx` (`atores_idatores` ASC),
-  INDEX `fk_series_has_atores_series1_idx` (`series_idseries` ASC),
-  CONSTRAINT `fk_series_has_atores_series1`
-    FOREIGN KEY (`series_idseries`)
-    REFERENCES `bibliografia`.`series` (`idseries`)
+CREATE TABLE IF NOT EXISTS `bibliografia`.`serie_elenco` (
+  `idserie` INT NOT NULL,
+  `idator` INT NOT NULL,
+  PRIMARY KEY (`idserie`, `idator`),
+  INDEX `fk_serie_has_ator_ator1_idx` (`idator` ASC),
+  INDEX `fk_serie_has_ator_serie1_idx` (`idserie` ASC) ,
+  CONSTRAINT `fk_serie_has_ator_serie1`
+    FOREIGN KEY (`idserie`)
+    REFERENCES `bibliografia`.`serie` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_series_has_atores_atores1`
-    FOREIGN KEY (`atores_idatores`)
-    REFERENCES `bibliografia`.`atores` (`idatores`)
+  CONSTRAINT `fk_serie_has_ator_ator1`
+    FOREIGN KEY (`idator`)
+    REFERENCES `bibliografia`.`ator` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO series_elenco(series_idseries,atores_idatores) values
+INSERT INTO serie_elenco(idserie,idator) values
 (1,8),
 (2,3),
 (3,4),
@@ -6226,11 +6269,11 @@ INSERT INTO series_elenco(series_idseries,atores_idatores) values
 -- Table `bibliografia`.`producao`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bibliografia`.`producao` (
-  `idproducao` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(30) NOT NULL,
   `cargo` VARCHAR(45) NOT NULL,
   `foto` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idproducao`))
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 INSERT INTO producao(nome,cargo,foto) values
@@ -6251,27 +6294,27 @@ INSERT INTO producao(nome,cargo,foto) values
 ('Roberto Justos','Dialoguista','C:/FOTOS/FUNCIONARIOS');
 
 -- -----------------------------------------------------
--- Table `bibliografia`.`filmes_has_producao`
+-- Table `bibliografia`.`filme_has_producao`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`filmes_has_producao` (
-  `filmes_idfilmes` INT NOT NULL,
-  `producao_idproducao` INT NOT NULL,
-  PRIMARY KEY (`filmes_idfilmes`, `producao_idproducao`),
-  INDEX `fk_filmes_has_producao_producao1_idx` (`producao_idproducao` ASC),
-  INDEX `fk_filmes_has_producao_filmes1_idx` (`filmes_idfilmes` ASC),
+CREATE TABLE IF NOT EXISTS `bibliografia`.`filme_has_producao` (
+  `idfilme` INT NOT NULL,
+  `idproducao` INT NOT NULL,
+  PRIMARY KEY (`idfilme`, `idproducao`),
+  INDEX `fk_filme_has_producao_producao1_idx` (`idproducao` ASC),
+  INDEX `fk_filme_has_producao_filme1_idx` (`idfilme` ASC) ,
   CONSTRAINT `fk_filmes_has_producao_filmes1`
-    FOREIGN KEY (`filmes_idfilmes`)
-    REFERENCES `bibliografia`.`filmes` (`idfilmes`)
+    FOREIGN KEY (`idfilme`)
+    REFERENCES `bibliografia`.`filme` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_filmes_has_producao_producao1`
-    FOREIGN KEY (`producao_idproducao`)
-    REFERENCES `bibliografia`.`producao` (`idproducao`)
+  CONSTRAINT `fk_filme_has_producao_producao1`
+    FOREIGN KEY (`idproducao`)
+    REFERENCES `bibliografia`.`producao` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO filmes_has_producao(filmes_idfilmes,producao_idproducao) values
+INSERT INTO filme_has_producao(idfilme,idproducao) values
 (1,9),
 (2,15),
 (3,10),
@@ -6290,27 +6333,27 @@ INSERT INTO filmes_has_producao(filmes_idfilmes,producao_idproducao) values
 (16,2);
 
 -- -----------------------------------------------------
--- Table `bibliografia`.`producao_has_series`
+-- Table `bibliografia`.`producao_has_serie`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`producao_has_series` (
-  `producao_idproducao` INT NOT NULL,
-  `series_idseries` INT NOT NULL,
-  PRIMARY KEY (`producao_idproducao`, `series_idseries`),
-  INDEX `fk_producao_has_series_series1_idx` (`series_idseries` ASC),
-  INDEX `fk_producao_has_series_producao1_idx` (`producao_idproducao` ASC),
-  CONSTRAINT `fk_producao_has_series_producao1`
-    FOREIGN KEY (`producao_idproducao`)
-    REFERENCES `bibliografia`.`producao` (`idproducao`)
+CREATE TABLE IF NOT EXISTS `bibliografia`.`producao_has_serie` (
+  `idproducao` INT NOT NULL,
+  `idserie` INT NOT NULL,
+  PRIMARY KEY (`idproducao`, `idserie`),
+  INDEX `fk_producao_has_serie_serie1_idx` (`idserie` ASC),
+  INDEX `fk_producao_has_serie_producao1_idx` (`idproducao` ASC) ,
+  CONSTRAINT `fk_producao_has_serie_producao1`
+    FOREIGN KEY (`idproducao`)
+    REFERENCES `bibliografia`.`producao` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_producao_has_series_series1`
-    FOREIGN KEY (`series_idseries`)
-    REFERENCES `bibliografia`.`series` (`idseries`)
+  CONSTRAINT `fk_producao_has_serie_serie1`
+    FOREIGN KEY (`idserie`)
+    REFERENCES `bibliografia`.`serie` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO producao_has_series(producao_idproducao,series_idseries) values
+INSERT INTO producao_has_serie(idproducao,idserie) values
 (15,1),
 (12,2),
 (5,3),
@@ -6327,21 +6370,21 @@ INSERT INTO producao_has_series(producao_idproducao,series_idseries) values
 -- Table `bibliografia`.`epsodio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bibliografia`.`epsodio` (
-  `idepsodio` INT NOT NULL AUTO_INCREMENT,
-  `temporadas` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `temporada` INT NOT NULL,
   `nome` VARCHAR(30) NOT NULL,
   `descricao` VARCHAR(300) NOT NULL,
-  `popularidade` DOUBLE(2,1) NOT NULL,
-  PRIMARY KEY (`idepsodio`),
-  INDEX `fk_epsodio_temporadas1_idx` (`temporadas` ASC),
-  CONSTRAINT `fk_epsodio_temporadas1`
-    FOREIGN KEY (`temporadas`)
-    REFERENCES `bibliografia`.`temporadas` (`idtemporadas`)
+  `popularidade` float NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_epsodio_temporada1_idx` (`temporada` ASC) ,
+  CONSTRAINT `fk_epsodio_temporads1`
+    FOREIGN KEY (`temporada`)
+    REFERENCES `bibliografia`.`temporada` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO epsodio(temporadas,nome,descricao,popularidade) values
+INSERT INTO epsodio(temporada,nome,descricao,popularidade) values
 (1,'É ISSO AE','MUITO BOA',7.9),
 (2,'BACALHAU','BEM LONGA',9.8),
 (7,'CABRAL QUINTO','DOM PEDRO TERCEIRO',9.9),
@@ -6356,30 +6399,64 @@ INSERT INTO epsodio(temporadas,nome,descricao,popularidade) values
 (8,'O QUE TÁ CONTECENDO','AOKSOA',8.8),
 (7, 'O IF SUGOU A','SANIDADE MENTAL',9.8),
 (5,'DE TODOS NÓS','E OS QUE VIRÃO',7.2),
-(6,'É ISSO AÍ AMIGOS','ATÉ A PRÓXIMA',9.9); 
-
+(6,'É ISSO AÍ AMIGOS','ATÉ A PRÓXIMA',9.9), 
+(7,'QUE LOUCURA','ESSE DIA FOI LOCO',8.4),
+(8,'MAS O QUE ISSO AQUI','O QUE E ISSO NA MINHA TELA',9.1),
+(9,'EU NAO ESTOU ENTENDENDO','HE HE BOI',9.9),
+(1,'DONA MARIA','SEU ZE',9.3),
+(1,'SEU ZER DO CAROÇO','CAIO',7.9),
+(2,'NUNCA NEM VI','QUE DIA FOI ISSO',9.6),
+(3,'OLHA SO QUE LEGAL','SUMIU CADE A TETE',8.4),
+(4,'ME AJUDA','SE EU SO VOCE VOCE SOU EU',7.3),
+(2,'VEM MONSTRO','PODE VIM COMIGO MOSTRO',8.2),
+(1,'ONDE EU QUE TO','EU TO PERDIDA',8.9),
+(8,'ALAGOINHA','SOU DO BRAZIL',8.5),
+(10,'POROROCA','O MUNDO NAO E MAIS O MESMO',9.0),
+(7,'LA SE FOI','SEM ESPERANCA',8.5),
+(5,'UM POR UM','TODOS POR UM',7.5),
+(3,'UM POR TODO','EU SOU INVENCIVEL',9.9),
+(1,'IMORTAL','INIGUALAVEL',9.9),
+(15,'SUPREMO REI','A COROACAO',9.8),
+(2,'JAMAIS SEREI DERROTADO','BATALHA MORTAL',8.2),
+(14,'CONQUISTAREI OS CEUS','REI CELESTIAL',7.3),
+(2,'NA PALMA DA MAO','DANCANDO',8.7),
+(7,'O MAL E LIBERADO','LIBERTADORES',8.5),
+(6,'O LADO ESCURO DA FORCA','INCRIVEL',9.6),
+(4,'SAGAZ','PEGO NO ATO',9.8),
+(9,'MAIOR E O TROCO','FICANDO RICO',9.7),
+(7,'GOVERNANDO OS CEUS','ONIPOTENTE',9.3),
+(4,'ZELADOR','PODER INIGUALAVEL',7.5),
+(2,'PARQUE FANTAMSA','O SOM DA MORTE',7.1),
+(1,'PRA ONDE IR','DO COMECO NOVAMENTE',6.0),
+(3,'O ULTIMO BAILE','A ULTIMA DANCA',5.0),
+(6,'MEDITACAO','PAZ INTERIOR',8.0),
+(14,'ZEN','CONCENTRACAO',7.5),
+(15,'CULTIVACAO','RAIZES E ERVAS',9.9),
+(2,'PILATES','GINASTICA',7.5),
+(8,'ARTES MARCIAS','DINASTIA MING',8.3),
+(3,'A QUEDA DE UM IMPERIO','DIRETO PRA RUA',9.3);
 -- -----------------------------------------------------
--- Table `bibliografia`.`series_has_cidade`
+-- Table `bibliografia`.`serie_has_cidade`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bibliografia`.`series_has_cidade` (
-  `series_idseries` INT NOT NULL,
-  `cidade_id` INT NOT NULL,
-  PRIMARY KEY (`series_idseries`, `cidade_id`),
-  INDEX `fk_series_has_cidade_cidade1_idx` (`cidade_id` ASC),
-  INDEX `fk_series_has_cidade_series1_idx` (`series_idseries` ASC),
-  CONSTRAINT `fk_series_has_cidade_series1`
-    FOREIGN KEY (`series_idseries`)
-    REFERENCES `bibliografia`.`series` (`idseries`)
+CREATE TABLE IF NOT EXISTS `bibliografia`.`serie_has_cidade` (
+  `idserie` INT NOT NULL,
+  `idcidade` INT NOT NULL,
+  PRIMARY KEY (`idserie`, `idcidade`),
+  INDEX `fk_serie_has_cidade_cidade1_idx` (`idcidade` ASC) ,
+  INDEX `fk_serie_has_cidade_serie1_idx` (`idserie` ASC),
+  CONSTRAINT `fk_serie_has_cidade_serie1`
+    FOREIGN KEY (`idserie`)
+    REFERENCES `bibliografia`.`serie` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_series_has_cidade_cidade1`
-    FOREIGN KEY (`cidade_id`)
+    FOREIGN KEY (`idcidade`)
     REFERENCES `bibliografia`.`cidade` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO series_has_cidade(series_idseries,cidade_id) values
+INSERT INTO serie_has_cidade(idserie,idcidade) values
 (1,324),
 (2,122),
 (3,100),
