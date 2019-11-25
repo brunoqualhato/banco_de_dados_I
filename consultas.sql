@@ -1,25 +1,27 @@
+show databases;
+use bibliografia;
 #SCRIPT PARA LISTAR TODOS OS FILMES E SEUS GENEROS
 SELECT *
-FROM   filmes F
-       INNER JOIN filmes_has_generos FG
-               ON F.idfilmes = FG.filmes_idfilmes
-       INNER JOIN generos G
-               ON FG.generos_idgeneros = G.idgeneros;  
+FROM   filme F
+       INNER JOIN filme_has_genero FG
+               ON F.id = FG.idfilme
+       INNER JOIN genero G
+               ON FG.idgenero = G.id;  
                
 			
 #SCRIPT PARA LISTAR TODOS OS FILMES E SEUS ATORES
 SELECT *
-FROM   filmes F
+FROM   filme F
        INNER JOIN elenco_filme EF
-               ON F.idfilmes = EF.filmes_idfilmes
-       INNER JOIN atores A
-               ON A.idatores = EF.atores_idatores;  
+               ON F.id = EF.idfilme
+       INNER JOIN ator A
+               ON A.id = EF.idator;  
                
 #SCRIPT PARA LISTAR ATORES QUE NÃO TEM FILMES
 SELECT *
-FROM   atores A
-       LEFT JOIN series_elenco ES
-              ON A.idatores = ES.atores_idatores
-       LEFT JOIN series F
-              ON F.idseries = ES.series_idseries
-WHERE  ES.atores_idatores = NULL  
+FROM   ator A
+       LEFT JOIN serie_elenco ES
+              ON A.id = ES.idator
+       LEFT JOIN serie F
+              ON F.id = ES.idserie
+WHERE  ES.idator = NULL;
