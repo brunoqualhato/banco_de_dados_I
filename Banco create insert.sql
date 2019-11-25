@@ -1,3 +1,4 @@
+drop database bibliografia;
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -5774,7 +5775,7 @@ CREATE TABLE IF NOT EXISTS `bibliografia`.`filmes_has_generos` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO filmes_has-generos(filmes_idfilmes,generos_idgeneros) values
+INSERT INTO filmes_has_generos(filmes_idfilmes,generos_idgeneros) values
 (1,7),
 (2,1),
 (3,1),
@@ -6346,16 +6347,16 @@ INSERT INTO epsodio(temporadas,nome,descricao,popularidade) values
 (7,'CABRAL QUINTO','DOM PEDRO TERCEIRO',9.9),
 (4,'NÁRNIA','BEM-VINDO',7.9),
 (5,'EMPREGUETES','ESTRESSE',8.8),
-(3,'NO MAR NÃO TEM PEIXE','PIRATARIA',10.0),
-(9,'O MAU PREVALECE','IRMÃOS',10.0),
-(2,'JOSH ENLOUQUECEU','DRAKE',10.0),
+(3,'NO MAR NÃO TEM PEIXE','PIRATARIA',9.9),
+(9,'O MAU PREVALECE','IRMÃOS',9.9),
+(2,'JOSH ENLOUQUECEU','DRAKE',9.9),
 (1,'GOKU RENASCE','VEGETTA INVEJOSO',9.9),
-(2,'LUFFY CHUTA TUDO','SEM NOÇÃO',10.0),
+(2,'LUFFY CHUTA TUDO','SEM NOÇÃO',9.9),
 (9,'ARQUIPÉLAGO','QUE ISSO MEN',7.9),
 (8,'O QUE TÁ CONTECENDO','AOKSOA',8.8),
-(7, 'O IF SUGOU A','SANIDADE MENTAL',9.9),
+(7, 'O IF SUGOU A','SANIDADE MENTAL',9.8),
 (5,'DE TODOS NÓS','E OS QUE VIRÃO',7.2),
-(6,'É ISSO AÍ AMIGOS','ATÉ A PRÓXIMA',10.0); 
+(6,'É ISSO AÍ AMIGOS','ATÉ A PRÓXIMA',9.9); 
 
 -- -----------------------------------------------------
 -- Table `bibliografia`.`series_has_cidade`
